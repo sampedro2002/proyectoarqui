@@ -80,11 +80,6 @@ def enviar_correo(run):
         smtp.send_message(msg)
         print('Correo electrónico enviado exitosamente')
 
-#Funcion de porcentaje de CPU
-def obtener_porcentaje_cpu():
-    porcentaje = psutil.cpu_percent(interval=1)
-    return porcentaje
-
 #La parte del envio del correo y al mqtt
 
 client = connect_mqtt()
@@ -92,19 +87,14 @@ def run():
     counter = 0
     while True:
         client.loop_start()
-        time.sleep(10)
+        time.sleep(5)
         if FLAG_CONNECTED:
             # Agregar el contador aquí
             counter += 1
             publish(client, TOPIC_ALERT, counter) 
-            #enviar_correo(counter)
+            enviar_correo(counter)
         else:
             client.loop_stop()
-
-def enviar_cpu():
-    porcentaje = obtener_porcentaje_cpu()
-    if porcentaje >= 10:
-        publish(client, TOPIC_ALERT, porcentaje)
 
 if __name__ == '__main__':
     run()
