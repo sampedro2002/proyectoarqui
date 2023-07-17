@@ -94,8 +94,10 @@ def run():
             if porcentaje >= 40:
                 alerta = (f"Alerta el uso del CPU esta en: {porcentaje}%")
                 enviar_correo(alerta)
+                publish(client, TOPIC_ALERT, alerta)
             else:
                 print("Sin novedades")
+
         else:
             client.loop_stop()
 
